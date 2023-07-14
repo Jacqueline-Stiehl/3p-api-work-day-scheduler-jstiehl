@@ -14,7 +14,7 @@ https://github.com/Jacqueline-Stiehl/3p-api-work-day-scheduler-jstiehl
 
 ## URL of deployed application
 
-https://jacqueline-stiehl.github.io/password-generator-javascript/
+https://jacqueline-stiehl.github.io/3p-api-work-day-scheduler-jstiehl/
 
 ## Acknowledgements
 
