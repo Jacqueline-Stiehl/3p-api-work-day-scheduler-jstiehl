@@ -11,70 +11,7 @@ $(function () {
   }
   showTime();
 
-  var saveBtn = $(".saveBtn");
-  saveBtn.on("click", function (event) {
-    event.preventDefault();
-  });
-
-  $("#description").text.val;
-
-  // //need help with saving text onto calendar
-  var containerDiv = $(".container-lg"); //delegate event listener to parent element
-
-  containerDiv.on("click", function (event) {
-    event.preventDefault();
-    // const tasksFromStorage = localStorage.getItem(task);
-    // const parsedTasks = JSON.parse(tasksFromStorage);
-    // if (tasksFromStorage === null) {
-    //   localStorage.setItem(parsedTasks, "");
-    // }
-
-    // function saveTask(event) {
-    //   event.preventDefault();
-    //   var task = $('input[name="#task-"]').val();
-    //   //console.log(task);
-    // }
-
-    //code from Gary 7/13/23
-    const allHours = [
-      { id: 8, name: "8AM" },
-      { id: 9, name: "9AM" },
-      { id: 10, name: "10AM" },
-      { id: 11, name: "11AM" },
-      { id: 12, name: "12PM" },
-      { id: 1, name: "1PM" },
-      { id: 2, name: "2PM" },
-      { id: 3, name: "3PM" },
-      { id: 4, name: "4PM" },
-      { id: 5, name: "5PM" },
-    ];
-
-    const stringifiedTimes = JSON.stringify(allHours);
-    localStorage.setItem("myHours", stringifiedTimes);
-
-    const timesFromStorage = localStorage.getItem("myHours");
-    const parsedtimes = JSON.parse(timesFromStorage);
-    console.log(parsedtimes);
-
-    //how to store an array of objects in local storage
-    //I added below on 7-13-23:
-    // var hour = ["8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18",]
-    // var hourly = {time: ${i}}
-
-    //from tutor:
-    console.log("Save button works");
-
-    // const stringifiedTasks = JSON.stringify(saveTask);
-    // localStorage.setItem(task, stringifiedTasks); //(time, value)
-
-    // const tasksFromStorage = localStorage.getItem(task);
-    // const parsedTasks = JSON.parse(tasksFromStorage);
-    // if (tasksFromStorage === null) {
-    //   localStorage.setItem(task, "");
-    // }
-
-    // saveTask();
-  });
+  var containerDiv = $(".container-lg");
 
   //checks time and color codes rows according to past, present, future color scheme
   for (var i = 8; i < 18; i++) {
@@ -89,21 +26,13 @@ $(function () {
     containerDiv.append(
       $(`<div id="hour-${i}" class="row time-block past">
   <div class="col-2 col-md-1 hour text-center py-3">${time}</div>
-  <textarea id="task" class="col-8 col-md-10 description" rows="3"></textarea>
+  <textarea class="col-8 col-md-10 description" rows="3"></textarea>
   <button class="btn saveBtn col-2 col-md-1" aria-label="save">
     <i class="fas fa-save" aria-hidden="true"></i>
   </button>
-</div>`) //I added id "task" to textarea
+</div>`)
     );
   }
-
-  var textarea = $(".description");
-  console.log(textarea);
-  localStorage.setItem(timeBlocks, textarea.val());
-
-  //I added this 7/13/23
-  // var textarea = `#hour-${i}"`;
-  // console.log(textarea);
 
   // create a variable to hold an array of all the divs with class of time-block
   var timeBlocks = $(".time-block");
@@ -113,8 +42,6 @@ $(function () {
     var id = $(timeBlocks[i]).attr("id");
     // split the id string so that we only want the integer part after 'hour-', then convert to an integer data type
     var hour = parseInt(id.split("hour-")[1]);
-    console.log(hour);
-    console.log(currHour);
     // update classes of div to reflect how the associated time compares with the current hour
     if (hour > currHour) {
       // add and remove classes to div that we are currently working with in the loop
@@ -127,12 +54,20 @@ $(function () {
       $(timeBlocks[i]).addClass("past");
       $(timeBlocks[i]).removeClass("present future");
     } //change color to past}
+    var task = localStorage.getItem(i);
+    $(timeBlocks[i]).children("textarea").val(task);
   }
 
-  // $(timeBlocks).each(function(){
-  //var timeBlockTask = $(timeBlocks).children().text(${i});
-  //   console.log(timeBlockTask);
-  // })
+  $(timeBlocks).each(function (index, timeBlock) {
+    var button = $(timeBlock).children("button");
+
+    $(button).on("click", function () {
+      var timeBlockTask = $(timeBlock).children("textarea").val();
+
+      localStorage.setItem(index, timeBlockTask);
+    });
+  });
+
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -140,9 +75,6 @@ $(function () {
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
   //
-  //use on for listener event:
-  // alertButtonEl.on("click", function(event) {
-  //   Console.log($(this).attr("style", "display", "none"))});
 
   // Done--TODO: Add code to apply the past, present, or future class to each time
   // block by comparing the id to the current hour. HINTS: How can the id
@@ -165,10 +97,10 @@ $(function () {
   // Done--THEN each timeblock is color coded to indicate whether it is in the past, present, or future
   // Done--WHEN I click into a timeblock
   // Done--THEN I can enter an event
-  // WHEN I click the save button for that timeblock
-  // THEN the text for that event is saved in local storage
-  // WHEN I refresh the page
-  // THEN the saved events persist
+  // Done--WHEN I click the save button for that timeblock
+  // Done--THEN the text for that event is saved in local storage
+  // Done--WHEN I refresh the page
+  // Done--THEN the saved events persist
 
   // Hint for HW: is current time > or < some other time?
   // DayJS object stores current day, hour, min, second
